@@ -1,0 +1,35 @@
+name: "Run support-bundle on a cluster"
+on: [push]
+
+jobs:
+  compile-supportbundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v1
+        with:
+          go-version: '1.12.14'
+      - name: setup env
+        run: |
+          echo "::set-env name=GOPATH::$(go env GOPATH)"
+          echo "::add-path::$(go env GOPATH)/bin"
+        shell: bash
+      - uses: actions/checkout@master
+      - run: make support-bundle
+      - uses: actions/upload-artifact@v1
+        with:
+          name: support-bundle
+          path: bin/support-bundle
+
+  run-supportbundle:
+    runs-on: ubuntu-latest
+    needs: compile-supportbundle
+    steps:
+      - name: Download supoprt-bundle binary
+        uses: actions/download-artifact@v1
+        with:
+          name: support-bundle
+          path: bin/
+      - uses: engineerd/setup-kind@v0.2.0
+      - run: chmod +x bin/support-bundle
+      - run: bin/support-bundle https://troubleshoot.replicated.com
+
