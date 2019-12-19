@@ -1,7 +1,6 @@
 package analyzer
 
 import (
-	"fmt"
 	"path"
 	"regexp"
 	"strconv"
@@ -126,7 +125,6 @@ func compareRegex(conditional string, foundMatches map[string]string) (bool, err
 	// if the value side of the conditional is an int, we assume it's an int
 	lookForValueInt, err := strconv.Atoi(lookForValue)
 	if err == nil {
-		fmt.Printf("look for = %s, found = %s\n", lookForValue, foundValue)
 		foundValueInt, err := strconv.Atoi(foundValue)
 		if err != nil {
 			// not an error but maybe it should be...
