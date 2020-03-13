@@ -2,14 +2,22 @@ module github.com/replicatedhq/troubleshoot/pkg/analyze
 
 go 1.12
 
+replace github.com/nicksnyder/go-i18n => github.com/nicksnyder/go-i18n v1.10.1
+
 require (
-	github.com/nicksnyder/go-i18n v2.0.3+incompatible // indirect
-	github.com/nicksnyder/go-i18n/v2 v2.0.3 // indirect
-	github.com/pelletier/go-toml v1.6.0 // indirect
-	golang.org/x/crypto v0.0.0-20200311171314-f7b00557c8c4 // indirect
-	golang.org/x/net v0.0.0-20200301022130-244492dfa37a // indirect
-	golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527 // indirect
-	golang.org/x/tools v0.0.0-20200312194400-c312e98713c2 // indirect
-	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
-	gopkg.in/yaml.v2 v2.2.8 // indirect
+	github.com/coreos/etcd v3.3.15+incompatible // indirect
+	github.com/docker/spdystream v0.0.0-20181023171402-6480d4af844c // indirect
+	github.com/elazarl/goproxy v0.0.0-20191011121108-aa519ddbe484 // indirect
+	github.com/emicklei/go-restful v2.9.6+incompatible // indirect
+	github.com/go-logfmt/logfmt v0.4.0 // indirect
+	github.com/google/go-cmp v0.3.1 // indirect
+	github.com/hashicorp/go-getter v1.4.1 // indirect
+	github.com/mitchellh/go-wordwrap v1.0.0 // indirect
+	github.com/replicatedhq/troubleshoot v0.9.26 // indirect
+	github.com/stretchr/testify v1.5.1 // indirect
+	github.com/ugorji/go v1.1.7 // indirect
+	github.com/ulikunitz/xz v0.5.6 // indirect
+	go.undefinedlabs.com/scopeagent v0.1.12 // indirect
+	k8s.io/apiextensions-apiserver v0.17.4 // indirect
+	k8s.io/client-go v11.0.0+incompatible // indirect
 )
