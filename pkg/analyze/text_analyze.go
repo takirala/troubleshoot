@@ -37,9 +37,12 @@ func analyzeTextAnalyze(analyzer *troubleshootv1beta2.TextAnalyze, getCollectedF
 
 	results := []*AnalyzeResult{}
 
+	fmt.Println("+++++++++++++++++Printing result++++++++++++++++++\n", analyzer.Outcomes)
+
 	if analyzer.RegexPattern != "" {
 		for _, fileContents := range collected {
 			result, err := analyzeRegexPattern(analyzer.RegexPattern, fileContents, analyzer.Outcomes, checkName)
+			fmt.Println("+++++++++++++++++Printing result++++++++++++++++++\n", err, result)
 			if err != nil {
 				return nil, err
 			}
@@ -79,9 +82,13 @@ func analyzeTextAnalyze(analyzer *troubleshootv1beta2.TextAnalyze, getCollectedF
 func analyzeRegexPattern(pattern string, collected []byte, outcomes []*troubleshootv1beta2.Outcome, checkName string) (*AnalyzeResult, error) {
 	re, err := regexp.Compile(pattern)
 	if err != nil {
+		fmt.Println("+++++++++failing.....")
 		return nil, errors.Wrapf(err, "failed to compile regex: %s", pattern)
 	}
+	fmt.Printf("++++++++Pattern%q\n", pattern)
+	fmt.Printf("++++++++Collected %q\n", collected)
 
+	fmt.Println("+++++++++passed.....", err, re)
 	var failOutcome *troubleshootv1beta2.SingleOutcome
 	var passOutcome *troubleshootv1beta2.SingleOutcome
 	for _, outcome := range outcomes {
@@ -96,6 +103,7 @@ func analyzeRegexPattern(pattern string, collected []byte, outcomes []*troublesh
 		IconKey: "kubernetes_text_analyze",
 		IconURI: "https://troubleshoot.sh/images/analyzer-icons/text-analyze.svg",
 	}
+	fmt.Println("+++++++collected", string(collected))
 
 	if re.MatchString(string(collected)) {
 		result.IsPass = true
@@ -103,6 +111,7 @@ func analyzeRegexPattern(pattern string, collected []byte, outcomes []*troublesh
 			result.Message = passOutcome.Message
 			result.URI = passOutcome.URI
 		}
+		fmt.Println("Returning success........")
 		return &result, nil
 	}
 	result.IsFail = true
