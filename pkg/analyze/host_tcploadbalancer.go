@@ -41,7 +41,9 @@ func (a *AnalyzeHostTCPLoadBalancer) Analyze(getCollectedFileContents func(strin
 		return nil, errors.Wrap(err, "failed to unmarshal collected")
 	}
 
-	var coll resultCollector
+	result := &AnalyzeResult{
+		Title: a.Title(),
+	}
 
 	for _, outcome := range hostAnalyzer.Outcomes {
 		result := &AnalyzeResult{Title: a.Title()}
@@ -52,7 +54,7 @@ func (a *AnalyzeHostTCPLoadBalancer) Analyze(getCollectedFileContents func(strin
 				result.Message = outcome.Fail.Message
 				result.URI = outcome.Fail.URI
 
-				coll.push(result)
+				return []*AnalyzeResult{result}, nil
 			}
 
 			if string(actual.Status) == outcome.Fail.When {
@@ -60,7 +62,7 @@ func (a *AnalyzeHostTCPLoadBalancer) Analyze(getCollectedFileContents func(strin
 				result.Message = outcome.Fail.Message
 				result.URI = outcome.Fail.URI
 
-				coll.push(result)
+				return []*AnalyzeResult{result}, nil
 			}
 		} else if outcome.Warn != nil {
 			if outcome.Warn.When == "" {
@@ -68,7 +70,7 @@ func (a *AnalyzeHostTCPLoadBalancer) Analyze(getCollectedFileContents func(strin
 				result.Message = outcome.Warn.Message
 				result.URI = outcome.Warn.URI
 
-				coll.push(result)
+				return []*AnalyzeResult{result}, nil
 			}
 
 			if string(actual.Status) == outcome.Warn.When {
@@ -76,7 +78,7 @@ func (a *AnalyzeHostTCPLoadBalancer) Analyze(getCollectedFileContents func(strin
 				result.Message = outcome.Warn.Message
 				result.URI = outcome.Warn.URI
 
-				coll.push(result)
+				return []*AnalyzeResult{result}, nil
 			}
 		} else if outcome.Pass != nil {
 			if outcome.Pass.When == "" {
@@ -84,7 +86,7 @@ func (a *AnalyzeHostTCPLoadBalancer) Analyze(getCollectedFileContents func(strin
 				result.Message = outcome.Pass.Message
 				result.URI = outcome.Pass.URI
 
-				coll.push(result)
+				return []*AnalyzeResult{result}, nil
 			}
 
 			if string(actual.Status) == outcome.Pass.When {
@@ -92,10 +94,10 @@ func (a *AnalyzeHostTCPLoadBalancer) Analyze(getCollectedFileContents func(strin
 				result.Message = outcome.Pass.Message
 				result.URI = outcome.Pass.URI
 
-				coll.push(result)
+				return []*AnalyzeResult{result}, nil
 			}
 		}
 	}
 
-	return coll.get(a.Title()), nil
+	return []*AnalyzeResult{result}, nil
 }
